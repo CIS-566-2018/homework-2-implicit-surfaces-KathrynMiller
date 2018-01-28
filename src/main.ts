@@ -1,10 +1,11 @@
-import {vec3} from 'gl-matrix';
+import {vec3, vec2, mat4} from 'gl-matrix';
 import * as Stats from 'stats-js';
 import * as DAT from 'dat-gui';
 import Square from './geometry/Square';
 import Camera from './Camera';
 import {setGL} from './globals';
 import ShaderProgram, {Shader} from './rendering/gl/ShaderProgram';
+//import { inverse } from 'gl-matrix';
 
 // Define an object with application parameters and button callbacks
 // This will be referred to by dat.GUI's functions that add GUI elements.
@@ -56,6 +57,7 @@ function main() {
     new Shader(gl.FRAGMENT_SHADER, require('./shaders/raymarch-frag.glsl')),
   ]);
 
+
   // This function will be called every frame
   function tick() {
     camera.update();
@@ -87,6 +89,7 @@ function main() {
   setSize(window.innerWidth, window.innerHeight);
   camera.setAspectRatio(window.innerWidth / window.innerHeight);
   camera.updateProjectionMatrix();
+  raymarchShader.setDimensions(vec2.fromValues(window.innerWidth, window.innerHeight));
 
   // Start the render loop
   tick();

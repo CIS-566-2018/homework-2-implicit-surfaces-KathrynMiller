@@ -1,4 +1,4 @@
-import {vec4, mat4} from 'gl-matrix';
+import {vec4, mat4, vec2} from 'gl-matrix';
 import Drawable from './Drawable';
 import {gl} from '../../globals';
 
@@ -24,6 +24,7 @@ class ShaderProgram {
   attrPos: number;
 
   unifView: WebGLUniformLocation;
+  unifDim: WebGLUniformLocation;
 
   constructor(shaders: Array<Shader>) {
     this.prog = gl.createProgram();
@@ -40,6 +41,7 @@ class ShaderProgram {
     this.attrPos = gl.getAttribLocation(this.prog, "vs_Pos");
 
     // TODO: add other attributes here
+    this.unifDim = gl.getUniformLocation(this.prog, "u_Dimensions");
     this.unifView   = gl.getUniformLocation(this.prog, "u_View");
   }
 
@@ -51,6 +53,15 @@ class ShaderProgram {
   }
 
   // TODO: add functions to modify uniforms
+
+  // TODO: add functions to modify uniforms
+  setDimensions(d: vec2) {
+    this.use();
+    if (this.unifDim !== -1) {
+      gl.uniform2fv(this.unifDim, d);
+      console.log("dim: " + d);
+    }
+  }
 
   draw(d: Drawable) {
     this.use();
