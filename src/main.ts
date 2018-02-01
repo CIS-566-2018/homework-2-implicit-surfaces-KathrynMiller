@@ -11,6 +11,9 @@ import ShaderProgram, {Shader} from './rendering/gl/ShaderProgram';
 // This will be referred to by dat.GUI's functions that add GUI elements.
 const controls = {
   // TODO: add any controls you want
+  colorScheme: 0.0,
+  pause: false,
+  reflective: false,
 };
 
 let screenQuad: Square;
@@ -28,6 +31,10 @@ function main() {
   // TODO: add any controls you need to the gui
   const gui = new DAT.GUI();
   // E.G. gui.add(controls, 'tesselations', 0, 8).step(1);
+  // Choose from accepted values
+  gui.add(controls, 'colorScheme', { 'Scheme1': 0.0, 'Scheme2': 1.0, 'Scheme3': 2.0 } );
+  gui.add(controls, 'pause', false);
+  gui.add(controls, 'reflective', false);
 
   // get canvas and webgl context
   const canvas = <HTMLCanvasElement> document.getElementById('canvas');
@@ -69,6 +76,15 @@ function main() {
 
     raymarchShader.setTime(time);
     time++;
+    raymarchShader.setScheme(controls.colorScheme.valueOf());
+    if(controls.pause.valueOf() == true) {
+      time = 0;
+    }
+    if(controls.reflective == false) {
+      raymarchShader.setReflect(0.0);
+    } else {
+      raymarchShader.setReflect(1.0);
+    }
 
     gl.viewport(0, 0, window.innerWidth, window.innerHeight);
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);

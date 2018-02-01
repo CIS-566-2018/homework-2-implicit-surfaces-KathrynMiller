@@ -26,6 +26,9 @@ class ShaderProgram {
   unifView: WebGLUniformLocation;
   unifDim: WebGLUniformLocation;
   unifTime : WebGLUniformLocation;
+  unifPause: WebGLUniformLocation;
+  unifScheme: WebGLUniformLocation;
+  unifReflect: WebGLUniformLocation;
 
   constructor(shaders: Array<Shader>) {
     this.prog = gl.createProgram();
@@ -45,6 +48,9 @@ class ShaderProgram {
     this.unifDim = gl.getUniformLocation(this.prog, "u_Dimensions");
     this.unifView   = gl.getUniformLocation(this.prog, "u_View");
     this.unifTime   = gl.getUniformLocation(this.prog, "u_Time");
+    this.unifPause = gl.getUniformLocation(this.prog, "u_Pause");
+    this.unifScheme = gl.getUniformLocation(this.prog, "u_Scheme");
+    this.unifReflect = gl.getUniformLocation(this.prog, "u_Reflect");
   }
 
   use() {
@@ -68,6 +74,20 @@ class ShaderProgram {
     this.use();
     if (this.unifTime !== -1) {
       gl.uniform1f(this.unifTime, t);
+    }
+  }
+
+  setScheme(t: number) {
+    this.use();
+    if (this.unifScheme !== -1) {
+      gl.uniform1f(this.unifScheme, t);
+    }
+  }
+
+  setReflect(t: number) {
+    this.use();
+    if (this.unifReflect !== -1) {
+      gl.uniform1f(this.unifReflect, t);
     }
   }
 
