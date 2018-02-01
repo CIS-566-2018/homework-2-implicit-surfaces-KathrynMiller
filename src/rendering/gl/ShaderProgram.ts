@@ -25,6 +25,7 @@ class ShaderProgram {
 
   unifView: WebGLUniformLocation;
   unifDim: WebGLUniformLocation;
+  unifTime : WebGLUniformLocation;
 
   constructor(shaders: Array<Shader>) {
     this.prog = gl.createProgram();
@@ -43,6 +44,7 @@ class ShaderProgram {
     // TODO: add other attributes here
     this.unifDim = gl.getUniformLocation(this.prog, "u_Dimensions");
     this.unifView   = gl.getUniformLocation(this.prog, "u_View");
+    this.unifTime   = gl.getUniformLocation(this.prog, "u_Time");
   }
 
   use() {
@@ -59,7 +61,13 @@ class ShaderProgram {
     this.use();
     if (this.unifDim !== -1) {
       gl.uniform2fv(this.unifDim, d);
-      console.log("dim: " + d);
+    }
+  }
+
+  setTime(t: number) {
+    this.use();
+    if (this.unifTime !== -1) {
+      gl.uniform1f(this.unifTime, t);
     }
   }
 

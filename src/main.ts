@@ -14,6 +14,7 @@ const controls = {
 };
 
 let screenQuad: Square;
+let time: number = 0;
 
 function main() {
   // Initial display for framerate
@@ -40,6 +41,8 @@ function main() {
   if (!gl) {
     alert('WebGL 2 not supported!');
   }
+
+
   // `setGL` is a function imported above which sets the value of `gl` in the `globals.ts` module.
   // Later, we can import `gl` from `globals.ts` to access it
   setGL(gl);
@@ -49,8 +52,9 @@ function main() {
 
   const camera = new Camera(vec3.fromValues(0, 0, 5), vec3.fromValues(0, 0, 0));
 
-  gl.clearColor(0.0, 0.0, 0.0, 1);
+  gl.clearColor(0.0, 0.0, 0.0, 1.0);
   gl.disable(gl.DEPTH_TEST);
+
 
   const raymarchShader = new ShaderProgram([
     new Shader(gl.VERTEX_SHADER, require('./shaders/screenspace-vert.glsl')),
@@ -63,12 +67,15 @@ function main() {
     camera.update();
     stats.begin();
 
+    raymarchShader.setTime(time);
+    time++;
+
     gl.viewport(0, 0, window.innerWidth, window.innerHeight);
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
     // TODO: get / calculate relevant uniforms to send to shader here
     // TODO: send uniforms to shader
-
+    raymarchShader.setDimensions(vec2.fromValues(window.innerWidth, window.innerHeight));
     // March!
     raymarchShader.draw(screenQuad);
 
